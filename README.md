@@ -8,6 +8,9 @@
 Application that generates a webpage that displays the inputed team's basic info
 so that you have quick access to their emails and GitHub profiles.
 
+## Video
+
+https://watch.screencastify.com/v/eQyAuHJjT9gg8V8OtBIM
 
 ## Installation
  after cloning repo
