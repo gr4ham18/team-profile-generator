@@ -46,3 +46,107 @@ async function main() {
         return console.log(err);
     }
 }
+
+// Inquirer prompts to collect user data
+async function prompt() {
+    let responseDone = "";
+
+    do {
+        try {
+            console.log("---------------------------------------------");
+            let response = await inquirer.prompt([
+                {
+                    type: "input",
+                    name: "name",
+                    message: "Employee's name?",
+                    validate: function validateName(name) {
+                        return name !== "";
+                    }
+                },
+                {
+                    type: "input",
+                    name: "id",
+                    message: "Employee's ID: ",
+                    validate: function validateName(name) {
+                        return name !== "";
+                    }
+                },
+                {
+                    type: "input",
+                    name: "email",
+                    message: "Employee's email address: ",
+                    validate: function validateName(name) {
+                        return validator.validate(name);
+                    }
+                },
+                {
+                    type: "list",
+                    name: "role",
+                    message: "What is the employee's role: ",
+                    choices: [
+                        "Engineer",
+                        "Intern",
+                        "Manager"
+                    ]
+                }
+            ]);
+
+            let response2 = ""
+
+            if (response.role === "Engineer") {
+                response2 = await inquirer.prompt([{
+                    type: "input",
+                    name: "x",
+                    message: "Employee's github username?: ",
+                    validate: function validateName(name){
+                        return name !== "";
+                    },
+                }, ]);
+
+                // add to team Arr
+                const engineer = new Engineer(response.name, response.id, response.email, response2.x);
+                teamArray.push(engineer);
+            
+            } else if (response.role === "Manager") {
+                response2 = await inquirer.prompt([{
+                    type: "input",
+                    name: "x",
+                    message: "Employee's office number?: ",
+                    validate: function validateName(name){
+                        return name !== "";
+                    },
+                }, ]);
+
+                const manager = new Manager(response.name, response.id, response.email, response2.x);
+                teamArray.push(manager);
+
+            } else if (response.role === "Intern") {
+                response2 = await inquirer.prompt([{
+                    type: "input",
+                    name: "x",
+                    message: "What school is the intern attending: ",
+                    validate: function validateName(name){
+                        return name !== "";
+                    },
+                }, ]);
+
+                const intern = new Intern(response.name, response.id, response.email, response2.x);
+                teamArray.push(intern);
+            }
+        } catch (err) {
+            return console.log(err);
+        }
+        responseDone = await inquirer.prompt([{
+            type: "list",
+            name: "finish",
+            message: "Do you want to continue?: ",
+            choices: [
+                "Yes",
+                "No"
+            ]
+        },]);
+    } while (responseDone.finish === "Yes");
+}
+
+// initiate program
+main();
